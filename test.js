@@ -1,0 +1,1 @@
+alert('Скрипт работает с GitHub Pages!');
